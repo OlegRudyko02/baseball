@@ -4,58 +4,38 @@ import styled from "styled-components";
 import InputField from "../../components/inputField";
 import SubmitButton from "../../components/buttons/submitButton";
 import Api from "../../api";
-import { useAppDispatch } from "../../store";
-import { actions } from "../../states/auth";
 import { Link } from "react-router-dom";
 
-const SignIn: React.FC = () => {
-  const dispatch = useAppDispatch()
-  const signIn = (values: any) => {
-    if (
-      values.email &&
-      values.password &&
-      values.email.trim().length &&
-      values.password.trim().length
-    ) {
+const Recovery: React.FC = () => {
+  const recovery = (values: any) => {
+    if (values.email && values.email.trim().length) {
       const user = {
-        email: values.email,
-        password: values.password,
+        email: values.email
       };
-      Api.signIn(user)
-        .then((res: any) => dispatch(actions.signIn(res.headers)))
+      Api.recovery(user)
+        .then((res: any) => console.log(res))
         .catch((er: any) => console.log(er));
     }
   };
   return (
     <Modal>
       <Header>
-        <p>Welcome to BaseballCloud!</p>
-        <span>Sign into your account here:</span>
+        <p>Forgot Password</p>
+        <span>Please enter your email address. You will receive a link to reset your password via email.</span>
       </Header>
       <Form
-        onSubmit={signIn}
+        onSubmit={recovery}
         render={({ handleSubmit }) => (
           <Forms onSubmit={handleSubmit}>
             <Field name="email" component={InputField} placeholder="Email" />
-            <Field
-              name="password"
-              component={InputField}
-              placeholder="Password"
-              secure
-            />
-            <SubmitButton text={"Sign In"} />
+            <SubmitButton text={"Submit"} />
           </Forms>
         )}
       />
-      <div>
-        <Recovery>
-          <Link to='/recovery'>Forgotten password?</Link>
-        </Recovery>
-        <ButtonSignUp>
-          <p>Don’t have an account?</p>
-          <Link to='/signUp'>Sign Up</Link>
-        </ButtonSignUp>
-      </div>
+      <ButtonSignIn>
+        <p>Remember password?</p>
+        <Link to='/signIn'> Sign In</Link>
+      </ButtonSignIn>
     </Modal>
   );
 };
@@ -73,7 +53,7 @@ const Modal = styled.div`
   color: #667784;
 `;
 const Header = styled.div`
-  margin-bottom: 48px;
+  margin-bottom: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -81,8 +61,12 @@ const Header = styled.div`
     font-size: 20px;
     margin-bottom: 8px;
   }
+  & span {
+    display: block;
+    text-align: center;
+  }
 `;
-const ButtonSignUp = styled.div`
+const ButtonSignIn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -91,19 +75,10 @@ const ButtonSignUp = styled.div`
     padding-left: 3px;
   }
 `;
-const Recovery = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 16px;
-  & a {
-    color: #337ab7;
-    text-decoration: none;
-  }
-`;
 const Forms = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 100%;
 `;
-export default SignIn;
+export default Recovery;

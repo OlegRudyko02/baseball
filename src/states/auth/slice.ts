@@ -12,7 +12,8 @@ const auth = createSlice({
   initialState: initialState,
   reducers: {
     signIn: (state, {payload}) => {
-      state.access_token = payload.access_token
+      console.log(payload)
+      state.access_token = payload['access-token']
       state.client = payload.client
       state.uid = payload.uid
     },

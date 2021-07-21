@@ -3,29 +3,36 @@ import styled from 'styled-components'
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 
-const Lists: React.FC = () => {
+const UserInfoLayout: React.FC = () => {
   return (
-    <ListsScreen>
+    <UserInfo>
       <Header/>
       <Main>
-       
+       <InfoPanel>
+
+       </InfoPanel>
        
       </Main>
       <Footer/>
-    </ListsScreen>
+    </UserInfo>
   )
 }
-const ListsScreen = styled.div`
+const UserInfo = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #fff;
+  background-color: #788b99;
 `
 const Main = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
 `
-export default Lists
+const InfoPanel = styled.div`
+  height: 100%;
+  width: 200px;
+  background-color: #fff;
+`
+export default UserInfoLayout
