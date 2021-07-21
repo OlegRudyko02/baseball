@@ -3,13 +3,14 @@ import styled from "styled-components";
 type InputFieldProps = {
   input: any,
   meta: any
-  placeholder: string
+  placeholder: string,
+  secure?: boolean
 }
-const InputField: React.FC<InputFieldProps> = ({ placeholder, input }) => {
+const InputField: React.FC<InputFieldProps> = ({ placeholder, input, secure }) => {
  return (
     <Container>
       <Img src="/assets/user.svg" alt="#" />
-      <input type="text" {...input} placeholder={placeholder}/>
+      <input type={secure ? 'password' : 'text'} {...input} placeholder={placeholder}/>
     </Container>
  )
 }
