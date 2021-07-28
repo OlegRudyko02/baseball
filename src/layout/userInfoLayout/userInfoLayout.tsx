@@ -1,17 +1,16 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import styled from 'styled-components'
 import Header from "../../components/header";
 import Footer from "../../components/footer";
-
-const UserInfoLayout: React.FC = () => {
+type UserInfoLayoutProps = {
+  children: ReactNode
+}
+const UserInfoLayout: React.FC <UserInfoLayoutProps>= ({ children }) => {
   return (
     <UserInfo>
       <Header/>
       <Main>
-       <InfoPanel>
-
-       </InfoPanel>
-       
+        {children}
       </Main>
       <Footer/>
     </UserInfo>
@@ -28,7 +27,7 @@ const UserInfo = styled.div`
 const Main = styled.div`
   position: relative;
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 81px);
 `
 const InfoPanel = styled.div`
   height: 100%;

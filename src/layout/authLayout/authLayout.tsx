@@ -1,18 +1,17 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import styled from 'styled-components'
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 type AuthLayoutProps = {
-  Component: any
+  children: ReactNode
 }
-const AuthLayout: React.FC<AuthLayoutProps> = ({ Component }) => {
- 
+const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
   return (
     <Auth>
       <Header auth/>
       <Main>
         <Image src="/assets/stadium.png" alt="#" />
-        <Component/>
+       {children}
       </Main>
       <Footer/>
     </Auth>
