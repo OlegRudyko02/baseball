@@ -1,16 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-type InputFieldProps = {
+type TextareaProps = {
   input: any,
   meta: any
-  placeholder: string,
-  secure?: boolean
+  placeholder: string
 }
-const InputField: React.FC<InputFieldProps> = ({ placeholder, input, secure, meta }) => {
+const Textarea: React.FC<TextareaProps> = ({ placeholder, input, meta }) => {
  return (
     <Container>
-      <Img src="/assets/user.svg" alt="#" />
-      <input type={secure ? 'password' : 'text'} {...input} placeholder={placeholder}/>
+      <textarea {...input} placeholder={placeholder}/>
       {meta.error && meta.touched && <span>{input.name + " " + meta.error}</span>}
     </Container>
  )
@@ -18,12 +16,14 @@ const InputField: React.FC<InputFieldProps> = ({ placeholder, input, secure, met
 const Container = styled.div`
   position: relative;
   margin-bottom: 15px;
-  & input {
+  & textarea {
+    resize:none;
     width: 100%;
-    height: 50px;
+    min-height: 110px;
+    height: 40px;
     border-radius: 4px;
     background-color: #eff1f3;
-    padding: 6px 12px 10px 37px;
+    padding: 11px 16px;
     font-size: 16px;
     line-height: 1.13;
     font-weight: 400;
@@ -39,12 +39,4 @@ const Container = styled.div`
     text-transform: uppercase;
   }
 `;
-const Img = styled.img`
-  margin-bottom: 15px;
-  width: 20px;
-  height: 20px;
-  position: absolute;
-  top: 15px;
-  left: 9px;
-`;
-export default InputField
+export default Textarea

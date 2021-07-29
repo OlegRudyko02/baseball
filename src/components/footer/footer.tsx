@@ -6,14 +6,14 @@ const Footer:React.FC = () => {
   <Main>
     <Content>
       <span>© 2021 BaseballCloud</span>
-      <a href=''>Terms of Service</a>
-      <a href=''>Privacy Policy</a>
+      <a href='#'>Terms of Service</a>
+      <a href='#'>Privacy Policy</a>
     </Content>
     <Content>
-      <a href=''>Blog</a>
-      <a href=''>Twitter</a>
-      <a href=''>Instagram</a>
-      <a href=''>Facebook</a>
+      <a href='#'>Blog</a>
+      <a href='#'>Twitter</a>
+      <a href='#'>Instagram</a>
+      <a href='#'>Facebook</a>
     </Content>
   </Main>
  )
@@ -25,6 +25,7 @@ const Main = styled.div`
   align-items: center;
   padding: 10px 8px 10px 16px;
   font-size: 14px;
+  border-top: 1px solid rgba(0,0,0,.1);
 `;
 const Content = styled.div`
   display: flex;

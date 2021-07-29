@@ -2,30 +2,33 @@ import React from "react";
 import { Field, Form } from "react-final-form";
 import styled from "styled-components";
 import InputField from "../../components/inputField";
-import SubmitButton from "../../components/buttons/submitButton";
+import SubmitButton from "../../components/button";
 import Api from "../../api";
 import { useAppDispatch } from "../../store";
 import { actions } from "../../states/auth";
 import { Link } from "react-router-dom";
+import { ISignIn } from "../../interfaces/interfaces";
+import { useHistory } from "react-router-dom";
 
 const SignIn: React.FC = () => {
-  const dispatch = useAppDispatch()
-  const signIn = (values: any) => {
-    if (
-      values.email &&
-      values.password &&
-      values.email.trim().length &&
-      values.password.trim().length
-    ) {
-      const user = {
-        email: values.email,
-        password: values.password,
-      };
-      Api.signIn(user)
-        .then((res: any) => dispatch(actions.signIn(res.headers)))
-        .catch((er: any) => console.log(er));
-    }
+  const history = useHistory();
+  const dispatch = useAppDispatch();
+  const signIn = (values: ISignIn) => {
+    const user = {
+      email: values.email,
+      password: values.password,
+    };
+    Api.signIn(user)
+      .then((res: any) => {
+        dispatch(actions.signIn(res.headers));
+        history.push("/profile");
+      })
+      .catch((er: any) => console.log(er));
   };
+  const email = (value: string) =>
+    value && value.trim().length ? undefined : "Required";
+  const password = (value: string) =>
+    value && value.trim().length >= 8 ? undefined : "Required";
   return (
     <Modal>
       <Header>
@@ -34,26 +37,32 @@ const SignIn: React.FC = () => {
       </Header>
       <Form
         onSubmit={signIn}
-        render={({ handleSubmit }) => (
+        render={({ handleSubmit, submitting }) => (
           <Forms onSubmit={handleSubmit}>
-            <Field name="email" component={InputField} placeholder="Email" />
+            <Field
+              name="email"
+              validate={email}
+              component={InputField}
+              placeholder="Email"
+            />
             <Field
               name="password"
               component={InputField}
               placeholder="Password"
               secure
+              validate={password}
             />
-            <SubmitButton text={"Sign In"} />
+            <SubmitButton disabled={submitting} text={"Sign In"} />
           </Forms>
         )}
       />
       <div>
         <Recovery>
-          <Link to='/recovery'>Forgotten password?</Link>
+          <Link to="/recovery">Forgotten password?</Link>
         </Recovery>
         <ButtonSignUp>
           <p>Don’t have an account?</p>
-          <Link to='/signUp'>Sign Up</Link>
+          <Link to="/signUp">Sign Up</Link>
         </ButtonSignUp>
       </div>
     </Modal>

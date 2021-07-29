@@ -2,39 +2,48 @@ import React from "react";
 import { Field, Form } from "react-final-form";
 import styled from "styled-components";
 import InputField from "../../components/inputField";
-import SubmitButton from "../../components/buttons/submitButton";
+import SubmitButton from "../../components/button";
 import Api from "../../api";
 import { Link } from "react-router-dom";
+import { IRecovery } from "../../interfaces/interfaces";
 
 const Recovery: React.FC = () => {
-  const recovery = (values: any) => {
-    if (values.email && values.email.trim().length) {
-      const user = {
-        email: values.email
-      };
-      Api.recovery(user)
-        .then((res: any) => console.log(res))
-        .catch((er: any) => console.log(er));
-    }
+  const recoverPass = (values: IRecovery) => {
+    const user = {
+      email: values.email,
+    };
+    Api.recovery(user)
+      .then((res: any) => console.log(res))
+      .catch((er: any) => console.log(er));
   };
+  const email = (value: string) =>
+    value && value.trim().length ? undefined : "Required";
   return (
     <Modal>
       <Header>
         <p>Forgot Password</p>
-        <span>Please enter your email address. You will receive a link to reset your password via email.</span>
+        <span>
+          Please enter your email address. You will receive a link to reset your
+          password via email.
+        </span>
       </Header>
       <Form
-        onSubmit={recovery}
-        render={({ handleSubmit }) => (
+        onSubmit={recoverPass}
+        render={({ handleSubmit, submitting }) => (
           <Forms onSubmit={handleSubmit}>
-            <Field name="email" component={InputField} placeholder="Email" />
-            <SubmitButton text={"Submit"} />
+            <Field
+              name="email"
+              validate={email}
+              component={InputField}
+              placeholder="Email"
+            />
+            <SubmitButton disabled={submitting} text={"Submit"} />
           </Forms>
         )}
       />
       <ButtonSignIn>
         <p>Remember password?</p>
-        <Link to='/signIn'> Sign In</Link>
+        <Link to="/signIn"> Sign In</Link>
       </ButtonSignIn>
     </Modal>
   );
