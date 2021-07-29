@@ -1,4 +1,4 @@
 import { reducer as authReducer, actions } from './slice';
-import { getToken } from './selectors'
+import { auth } from './selectors'
 
-export { actions, authReducer, getToken };
+export { actions, authReducer, auth };

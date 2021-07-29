@@ -2,13 +2,15 @@ import React from "react";
 import styled from "styled-components";
 type SubmitButtonProps = {
   text: string
+  disabled: boolean
 }
-const SubmitButton:React.FC<SubmitButtonProps> = ({ text }) => {
+const SubmitButton:React.FC<SubmitButtonProps> = ({ text, disabled }) => {
  return (
-    <Button type='submit'> {text} </Button>
+    <Button disabled={disabled} type='submit'> {text} </Button>
  )
 }
 const Button = styled.button`
+  width: 100%;
   color: #ffffff;
   border: solid 1px transparent;
   box-shadow: 0 0 4px 0 rgb(72 187 255 / 0%);

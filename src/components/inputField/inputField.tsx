@@ -6,11 +6,12 @@ type InputFieldProps = {
   placeholder: string,
   secure?: boolean
 }
-const InputField: React.FC<InputFieldProps> = ({ placeholder, input, secure }) => {
+const InputField: React.FC<InputFieldProps> = ({ placeholder, input, secure, meta }) => {
  return (
     <Container>
       <Img src="/assets/user.svg" alt="#" />
       <input type={secure ? 'password' : 'text'} {...input} placeholder={placeholder}/>
+      {meta.error && meta.touched && <span>{input.name + " " + meta.error}</span>}
     </Container>
  )
 }
@@ -28,6 +29,14 @@ const Container = styled.div`
     font-weight: 400;
     color: #667784;
     border: 1px solid transparent;
+  }
+  & span {
+    display: block;
+    margin-top: 8px;
+    color: #F05F62;
+  }
+  & span:first-letter {
+    text-transform: uppercase;
   }
 `;
 const Img = styled.img`

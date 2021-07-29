@@ -2,36 +2,35 @@ import React, { useState } from "react";
 import { Field, Form } from "react-final-form";
 import styled from "styled-components";
 import InputField from "../../components/inputField";
-import SubmitButton from "../../components/buttons/submitButton";
+import SubmitButton from "../../components/button";
 import Api from "../../api";
 import { useAppDispatch } from "../../store";
 import { actions } from "../../states/auth";
 import { Link } from "react-router-dom";
+import { ISignUp } from "../../interfaces/interfaces";
 
 const SignUp: React.FC = () => {
   const [role, setRole] = useState("Player");
   const dispatch = useAppDispatch();
-  const signUp = (values: any) => {
-    if (
-      values.email &&
-      values.password &&
-      values.confirm &&
-      values.email.trim().length &&
-      values.password.trim().length &&
-      values.confirm === values.password
-    ) {
-      const user = {
-        email: values.email,
-        password: values.password,
-        password_confirmation: values.confirm,
-        role: role.toLowerCase()
-      };
-      Api.signUp(user)
-        .then((res: any) => dispatch(actions.signIn(res.headers)))
-        .catch((er: any) => console.log(er));
-    }
+  const signUp = (values: ISignUp) => {
+    const user = {
+      email: values.email,
+      password: values.password,
+      password_confirmation: values.password_confirmation,
+      role: role.toLowerCase(),
+    };
+    Api.signUp(user)
+      .then((res: any) => dispatch(actions.signIn(res.headers)))
+      .catch((er: any) => console.log(er));
   };
-  const description = role === 'Scout' ? 'Coaches and scouts can view players in the system but do not have their own profile.' : 'Players have their own profile within the system and plan on having data collected.'
+  const email = (value: string) =>
+    value && value.trim().length ? undefined : "Required";
+  const password = (value: string) =>
+    value && value.trim().length >= 8 ? undefined : "Required";
+  const description =
+    role === "Scout"
+      ? "Coaches and scouts can view players in the system but do not have their own profile."
+      : "Players have their own profile within the system and plan on having data collected.";
   return (
     <Modal>
       <RoleContainer>
@@ -57,38 +56,52 @@ const SignUp: React.FC = () => {
         </RoleItem>
       </RoleContainer>
       <RoleDescription>
-        <div>{role + 's'}</div>
+        <div>{role + "s"}</div>
         <p>{description}</p>
       </RoleDescription>
       <Form
         onSubmit={signUp}
-        render={({ handleSubmit }) => (
+        validate={(values) => {
+          const errors: any = {};
+          if (values.password_confirmation !== values.password) {
+            errors.password_confirmation = "Must match password";
+          }
+          return errors;
+        }}
+        render={({ handleSubmit, submitting }) => (
           <Forms onSubmit={handleSubmit}>
-            <Field name="email" component={InputField} placeholder="Email" />
+            <Field
+              name="email"
+              validate={email}
+              component={InputField}
+              placeholder="Email"
+            />
             <Field
               name="password"
               component={InputField}
               placeholder="Password"
               secure
+              validate={password}
             />
             <Field
-              name="confirm"
+              name="password_confirmation"
               component={InputField}
               placeholder="Confirm password"
               secure
+              validate={password}
             />
             <Agree>
               By clicking Sign Up, you agree to our
               <a href="#"> Terms of Service</a> and
               <a href="#"> Privacy Policy</a>.
             </Agree>
-            <SubmitButton text={"Sign Up"} />
+            <SubmitButton disabled={submitting} text={"Sign Up"} />
           </Forms>
         )}
       />
       <ButtonSignIn>
         <p>Already registered?</p>
-        <Link to='/signIn'>Sign In</Link>
+        <Link to="/signIn">Sign In</Link>
       </ButtonSignIn>
     </Modal>
   );
